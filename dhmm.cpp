@@ -29,10 +29,10 @@ THIS SOFTWARE IS PROVIDED BY COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESS OR IMPL
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdexcept> // for std::runtime_error
 //#pragma hdrstop; 
 
 #include "dhmm.h"
-
 
 Tensor::Tensor(unsigned x,unsigned y,unsigned z)
 {
@@ -755,7 +755,7 @@ Observation DHMM::GetProbableStateSequence(Observation obs,double &prob)
       for(unsigned i=0;i<NumStates;i++)      // Iterates the states at T+1
       {
          double p;
-         unsigned argmax;
+         unsigned argmax=0;
 
          p = -1;
          for(unsigned j=0;j<NumStates;j++)   // Find the most likely transition
@@ -794,7 +794,7 @@ Observation DHMM::GetProbableStateSequence(Observation obs,double &prob)
    printf("Termination\n");
    // We have the probabilities of all the path ending at time T in state i with correct observations; select the last hop.
    double P;                  // Overall probability of the state sequence
-   unsigned argmax;           // Ending state
+   unsigned argmax=0;           // Ending state
    P=-1;
    for(unsigned i=0;i<NumStates;i++)
    {
@@ -1334,7 +1334,8 @@ void DHMM::Load(char *file)
 	int ti;
 	FILE *f = fopen(file,"rt");
 	
-	fscanf(f,"%d %d\n",&NumStates,&NumSymbols);
+	if (2 != fscanf(f,"%d %d\n",&NumStates,&NumSymbols))
+		throw std::runtime_error("failed to read the number of states and symbols");
 	
 	Resize(NumStates,NumSymbols);
 	
@@ -1343,26 +1344,31 @@ void DHMM::Load(char *file)
 	
 	for(unsigned i=0;i<StartingStateProbabilities.size();i++)
 	{
-   	fscanf(f,"%lf ",&t);
+   	if (1 != fscanf(f,"%lf ",&t))
+		throw std::runtime_error("failed to read one of the starting state probabilities");
    	StartingStateProbabilities[i]=t;
 	}
    for(unsigned s=0;s<NumStates;s++)
    {
    	// states at this level
-   	fscanf(f,"%d\n",&operator[](s).ID);
+   	if (1 != fscanf(f,"%d\n",&operator[](s).ID))
+	  throw std::runtime_error("failed to read the state id");
    	for(unsigned i=0;i<operator[](s).ObservationProbability.size();i++)
    	{
-      	fscanf(f,"%lf ",&t);
+      	if (1 != fscanf(f,"%lf ",&t))
+	  throw std::runtime_error("failed to read the observation probability");
       	operator[](s).ObservationProbability[i]=t;
    	}
 	   for(unsigned i=0;i<operator[](s).TransitionProbability.size();i++)
    	{
-      	fscanf(f,"%lf ",&t);
+      	if (1 != fscanf(f,"%lf ",&t))
+	  throw std::runtime_error("failed to read the transition probability");
       	operator[](s).TransitionProbability[i]=t;
    	}
    	for(unsigned i=0;i<operator[](s).TransitionExist.size();i++)
       {
-      	fscanf(f,"%d ",&ti);
+      	if (1 != fscanf(f,"%d ",&ti))
+	  throw std::runtime_error("failed to read transition existence variable");
       	operator[](s).TransitionExist[i]=ti;
    	}
 	}	
