@@ -29,7 +29,7 @@ THIS SOFTWARE IS PROVIDED BY COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESS OR IMPL
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#pragma hdrstop; 
+//#pragma hdrstop; 
 
 #include "dhmm.h"
 
@@ -97,15 +97,15 @@ State::State(unsigned numstates,unsigned numsymbols)
 void State::Print()
 {
    printf("State(%p) ID %d\n",this,ID);
-   printf("ObservationProbability(%d): ",ObservationProbability.size());
+   printf("ObservationProbability(%d): ",(int)ObservationProbability.size());
    for(unsigned i=0;i<ObservationProbability.size();i++)
       printf("%.05lf ",ObservationProbability[i]);
    printf("\n");
-   printf("TransitionProbability(%d):  ",TransitionProbability.size());
+   printf("TransitionProbability(%d):  ",(int)TransitionProbability.size());
    for(unsigned i=0;i<TransitionProbability.size();i++)
       printf("%.05lf ",TransitionProbability[i]);
    printf("\n");
-   printf("TransitionExist(%d):        ",TransitionExist.size());
+   printf("TransitionExist(%d):        ",(int)TransitionExist.size());
    for(unsigned i=0;i<TransitionExist.size();i++)
       printf("%d       ",(int)TransitionExist[i]);
    printf("\n");
@@ -201,7 +201,7 @@ void DHMM::test()
 {
    for(unsigned i=0;i<NumStates;i++)
    {
-      printf("State %d. %p. %d\n",i,&(States[i]),States[i].ObservationProbability.size());
+     printf("State %d. %p. %d\n",i,&(States[i]),(int)States[i].ObservationProbability.size());
    }
 }
 
@@ -302,7 +302,7 @@ unsigned DHMM::GenerateFirstState()
 Observation DHMM::GenerateSequence(int length,Observation &states)
 {
    Observation obs;
-   Symbol s;
+   //   Symbol s;
 
    states.clear();
    
@@ -728,9 +728,9 @@ Observation DHMM::GetProbableStateSequence(Observation obs,double &prob)
 
    psi.resize(obs.size(),vector<unsigned>(NumStates,0));
 
-   printf("psi.size: %d\n",psi.size());
-   printf("psi[0].size: %d\n",psi[0].size());
-   printf("psi[0][0]: %d\n",psi[0][0]);
+   printf("psi.size: %d\n",(int)psi.size());
+   printf("psi[0].size: %d\n",(int)psi[0].size());
+   printf("psi[0][0]: %d\n",(int)psi[0][0]);
 
 
 
@@ -810,7 +810,7 @@ Observation DHMM::GetProbableStateSequence(Observation obs,double &prob)
    printf("Path backtracking\n");
    Path.resize(obs.size(),0);
 
-   printf("Size of path: %d\n",Path.size());
+   printf("Size of path: %d\n",(int)Path.size());
    // psi[0] does not exist! data are [psi(1), psi(2)....psi(obs.size()), argmax].
    for(unsigned t=obs.size()-1;t>=1;t--)
    {
