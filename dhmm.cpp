@@ -85,7 +85,7 @@ State::State(unsigned numstates,unsigned numsymbols)
    NumStates = numstates;
    NumSymbols = numsymbols;
    
-   printf("State(%p) %d\n",this,numsymbols);
+   //printf("State(%p) %d\n",this,numsymbols);
 
    Clear();
 }
@@ -179,7 +179,7 @@ void DHMM::Resize(int numstates,int numsymbols)
 	NumStates = numstates;
    NumSymbols = numsymbols;
    CurrentState=0;   
-   printf("DHMM(%p) %d %d\n",this,numstates,numsymbols);
+   //printf("DHMM(%p) %d %d\n",this,numstates,numsymbols);
 
    States.clear();
    States.resize(numstates,State(numstates,numsymbols));
@@ -201,7 +201,7 @@ void DHMM::test()
 {
    for(unsigned i=0;i<NumStates;i++)
    {
-     printf("State %d. %p. %d\n",i,&(States[i]),(int)States[i].ObservationProbability.size());
+     //printf("State %d. %p. %d\n",i,&(States[i]),(int)States[i].ObservationProbability.size());
    }
 }
 
