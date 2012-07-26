@@ -34,6 +34,7 @@ typedef vector<int> vectori;
 struct State
 {
    State(unsigned numstates,unsigned numsymbols);
+   virtual ~State() {}
 //   State(const State&);
 
    unsigned NumStates;
@@ -85,6 +86,7 @@ class Tensor
    public:
    	Tensor(unsigned x,unsigned y,unsigned z);
 	   virtual double get(unsigned x,unsigned y,unsigned z);
+	virtual ~Tensor() {}
    	virtual void set(unsigned x,unsigned y,unsigned z,double v);
    	virtual void resize(unsigned x,unsigned y,unsigned z);
    	virtual void Print();
