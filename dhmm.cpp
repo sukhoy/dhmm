@@ -521,7 +521,7 @@ double DHMM::Backward(unsigned T,unsigned I,Observation obs)
       beta[i] = 1.0;						
 
    // 2) Induction: find probabilities for time T from time T+1
-   for(int t=T-1;t>=t;t--)                 // Iterate all the observations (i.e. time steps)
+   for(int t=T-1;t>=0;t--)                 // Iterate all the observations (i.e. time steps)
    {
       for(unsigned i=0;i<NumStates;i++)      // Iterate the states at T+1
       {
@@ -1180,12 +1180,12 @@ double DHMM::BaumWelch(vector<Observation> obsvect,unsigned max_iter)
    
    // Pi
    for(unsigned i=0;i<NumStates;i++)
-   	StartingStateProbabilities[i] = e_pi[i];
+     StartingStateProbabilities[i] = e_pi[i];
    	
    // aij
    for(unsigned i=0;i<NumStates;i++)
-      for(unsigned j=0;j<NumStates;j++)
-      	operator[](i).TransitionProbability[j] = e_a[i][j];
+     for(unsigned j=0;j<NumStates;j++)
+       operator[](i).TransitionProbability[j] = e_a[i][j];
 
 	// bj(k)
 	for(unsigned i=0;i<NumStates;i++)
